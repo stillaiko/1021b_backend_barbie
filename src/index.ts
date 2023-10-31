@@ -2,17 +2,34 @@ import express from 'express'
 const app = express()
 app.use(express.json())
 
+type Filme = {
+    id:number,
+    titulo:string,
+    descricao:string,
+    imagem:string
+}
+let filmesCadastros:Filme[] = []
+
 app.post('/filmes',(req,res)=>{
+    const {id,titulo,descricao,imagem} = req.body
     const filme = {
-        id:1,
-        titulo:'Vingadores',
-        descricao:'Filme dos herois da marvel',
-        imagem:"https://live.staticflickr.com/7270/6976087418_59719341f5_b.jpg"
+        id,
+        titulo,
+        descricao,
+        imagem
     }
+    filmesCadastros.push(filme)
     res.status(201).send(filme)
 })
 app.get('/filmes',(req,res)=>{
     res.send("Filmes Listados com sucesso")
+})
+
+app.get('/filmes/:id',(req,res)=>{
+    const id = parseInt(req.params.id)
+    const filme = filmesCadastros.find(filme=>filme.id === id)
+    if(!filme) return res.status(404).send("Filme não encontrado")
+    res.status(200).send(filme)
 })
 
 app.listen(3000,()=>{
