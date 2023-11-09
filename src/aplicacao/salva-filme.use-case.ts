@@ -1,13 +1,19 @@
-import FilmeRepositorioInterface from "./filme-repositorio-interface"
-
+import FilmeRepositorioInterface from './filme-repositorio-interface'
 export default class SalvaFilme{
-    private repositorio:FilmeRepositorioInterface
+    private repositorio: FilmeRepositorioInterface 
     constructor(repositorio:any){
         this.repositorio = repositorio
     }
     public async execute(input:Input):Promise<Output>{
-        const {id,titulo,descricao,imagem} = input
-        return await this.repositorio.salvar({id,titulo,descricao,imagem})
+        const {id, titulo,descricao,imagem} = input
+        const result =  await this.repositorio.salvar({id, titulo,descricao,imagem})
+        const filmeSalvo = {
+            id: result.id,
+            titulo: result.titulo,
+            descricao: result.descricao,
+            imagem: result.imagem
+        }
+        return filmeSalvo
     }
 }
 
