@@ -1,6 +1,7 @@
 import express from 'express'
 import ListaFilme from './aplicacao/lista-filme.use-case'
 import BancoMongoDB from './infra/banco/banco-mongodb'
+import SalvaFilme from './aplicacao/salva-filme.use-case'
 
 const app = express()
 app.use(express.json())
@@ -13,14 +14,17 @@ type Filme = {
 }
 let filmesCadastros:Filme[] = []
 
-app.post('/filmes',(req,res)=>{
-    const {id,titulo,descricao,imagem} = req.body
-    const filme = {
-        id,
-        titulo,
-        descricao,
-        imagem
-    }
+app.post('/filmes',async(req,res)=>{
+    const bancoMongoDB = new BancoMongoDB
+    const salvaFilme = new SalvaFilme(bancoMongoDB);
+    // const {id,titulo,descricao,imagem} = req.body
+    const filme = await salvaFilme.execute(req.body);
+    // const filme = {
+    //     id,
+    //     titulo,
+    //     descricao,
+    //     imagem
+    // }
     filmesCadastros.push(filme)
     res.status(201).send(filme)
 })

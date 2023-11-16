@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 import FilmeRepositorioInterface from "../../aplicacao/filme-repositorio-interface";
-import ListarFilme from '../../aplicacao/lista-filme.use-case'
 
 require("dotenv").config();
 export default class BancoMongoDB implements  FilmeRepositorioInterface {
@@ -39,9 +38,9 @@ return filmeSalvo
   }
   async listar(): Promise<Filme[]> {
     const filmes = await this.filmeModelo.find()
-    return filmes.map((filme:any) => {
+    return filmes.map((filme:FilmeDTO) => {
     return {
-      id: filme.id,
+      id: filme._id,
     titulo: filme.titulo,
     descricao: filme.descricao,
     imagem: filme.imagem
@@ -60,3 +59,9 @@ type Filme = {
   descricao: string,
   imagem: string
 };
+type FilmeDTO = {
+  _id: number,
+  titulo: string,
+  descricao: string,
+  imagem: string
+}
