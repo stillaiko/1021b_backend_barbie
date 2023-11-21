@@ -2,9 +2,11 @@ import express from 'express'
 import ListaFilme from './aplicacao/lista-filme.use-case'
 import BancoMongoDB from './infra/banco/banco-mongodb'
 import SalvaFilme from './aplicacao/salva-filme.use-case'
+import cors from 'cors'
 
 const app = express()
 app.use(express.json())
+app.use(cors())
 
 type Filme = {
     id:number,
