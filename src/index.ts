@@ -7,7 +7,7 @@ import cors from 'cors'
 const app = express()
 app.use(express.json())
 app.use(cors())
-
+const bancoMongoDB = new BancoMongoDB
 type Filme = {
     id:number,
     titulo:string,
@@ -17,7 +17,7 @@ type Filme = {
 let filmesCadastros:Filme[] = []
 
 app.post('/filmes',async(req,res)=>{
-    const bancoMongoDB = new BancoMongoDB
+    
     const salvaFilme = new SalvaFilme(bancoMongoDB);
     // const {id,titulo,descricao,imagem} = req.body
     const filme = await salvaFilme.execute(req.body);
@@ -31,7 +31,6 @@ app.post('/filmes',async(req,res)=>{
     res.status(201).send(filme)
 })
 app.get('/filmes',async(req,res)=>{
-    const bancoMongoDB = new BancoMongoDB
     const listaFilme = new ListaFilme(bancoMongoDB);
     const filmes = await listaFilme.executar();
     res.send(filmes)
